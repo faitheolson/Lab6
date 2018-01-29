@@ -60,10 +60,9 @@ namespace Lab6
                 bool repeat = true;
                 Console.Clear();
                 return repeat;
-
             }
         }
-        public static string[] InputTextToArray(string InputText)
+        public static string[] InputTextToArray(string InputText)//divides text by spaces into words
         {
             return InputText.Split(' ');
         }
@@ -86,7 +85,7 @@ namespace Lab6
             char[] Vowels = { 'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u' };
             int VowelIndex = Word.IndexOfAny(Vowels);
 
-            if (VowelIndex > 0 || VowelIndex < 0)//if word does not start with a vowel or not contain a vowel
+            if (VowelIndex >= 0 )//if word does not start with a vowel or not contain a vowel
             {
                 Word = DoesNotStartWithVowels(Word, VowelIndex);
                 return Word;
