@@ -30,8 +30,9 @@ namespace Lab6
                         }
                         else
                         {
-                            string NewWord = CheckForVowels(Word); //Checks for vowel placement and performs operations
-                            Console.Write(NewWord + " ");
+                            string NewWord = DealWithPunctuation(Word, out string Punctuation);//checks for punctuation and creates substring for it
+                            NewWord = CheckForVowels(NewWord); //Checks for vowel placement and performs operations
+                            Console.Write(NewWord + Punctuation + " ");
                         }
                     }
                     repeat = RepeatProgram();
@@ -106,20 +107,24 @@ namespace Lab6
         {
             return Word += "way";
         }
-        //***Tried to find a method to move punctuation to the end but didn't get finished
-        //public static string MovePunctuation(string Word)
-        //{
-        //    //char[] Punctuation = { '!', ',', '?', '.',':',';'};
-        //    //int LastChar= Word.LastIndexOfAny(Punctuation);
-        //    if (Word.EndsWith(@"?|!"))
-        //    {
-        //        //Punct = NewWord.Substring(NewWord.Length,NewWord.Length);
-        //        return Word.Substring(0,Word.Length-1);
-        //    }
-        //    else
-        //    {
-        //        //Punct = null;
-        //        return Word + "not working!";
+        public static string DealWithPunctuation(string Word, out string Punctuation)//breaks word into 2 substrings if punctuation is present
+        {
 
+            int LastChar = Word.Length - 1;
+
+            if (Char.IsPunctuation(Word[LastChar]))
+            {
+                Punctuation = Word.Substring(LastChar, 1);
+                string ReturnWord = Word.Substring(0, LastChar);
+                
+                return ReturnWord;
+            }
+            else
+            {
+                Punctuation = " ";
+                return Word;
+            }
+        }
+        
     }
 }
