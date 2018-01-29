@@ -20,7 +20,7 @@ namespace Lab6
                     Console.WriteLine("Please enter a line of text!");
                     string InputText = Console.ReadLine();
 
-                    string[] WordArray = InputTextToArray(InputText);
+                    string[] WordArray = InputTextToArray(InputText); //breaks texts into array of words
 
                     foreach (string Word in WordArray)
                     {
@@ -30,7 +30,7 @@ namespace Lab6
                         }
                         else
                         {
-                            string NewWord = CheckForVowels(Word);
+                            string NewWord = CheckForVowels(Word); //Checks for vowel placement and performs operations
                             Console.Write(NewWord + " ");
                         }
                     }
