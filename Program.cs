@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Lab6
@@ -10,49 +11,116 @@ namespace Lab6
     {
         static void Main(string[] args)
         {
-            bool repeat = true;
-            char[] chars = { 'a', 'e', 'i', 'o', 'u',
-                       'A', 'E', 'I', 'O', 'U'};
-
-            while (repeat == true)
+            try
             {
-                Console.WriteLine("Please enter a word:");
-                string Input = Console.ReadLine();
-                //Input = Input.ToUpper();
-
-                int VowelValidation = Input.IndexOfAny(chars);
-
-                if (VowelValidation == 0)
+                bool repeat = true;
+                while (repeat == true)
                 {
-                    Console.WriteLine("Your word starts with a vowel!");
-                    Console.WriteLine($"{Input}way");
-                }
-                else
-                {
-                    Console.WriteLine("Your word DOES NOT start with a vowel!");
-                    string BeforeVowels = (Input.Remove(VowelValidation));
-                    Console.WriteLine(BeforeVowels);
-                    Console.WriteLine(Input);
-                    Console.WriteLine($"{(Input.Substring(VowelValidation, Input.Length - VowelValidation))}{BeforeVowels}ay");
-                }
+                    Console.WriteLine("Welcome to the Grand Circus Pig Latin Translator!");
+                    Console.WriteLine("Please enter a line of text!");
+                    string InputText = Console.ReadLine();
 
-                Console.WriteLine("Would you like to try another word?");
-                string again = Console.ReadLine();
+                    string[] WordArray = InputTextToArray(InputText);
 
-                if (again != "y" && again != "Y")
-                {
-                    repeat = false;
-                    Console.Clear();
-                    Console.WriteLine("Oodbyay!");
+                    foreach (string Word in WordArray)
+                    {
+                        if (CheckForNums(Word))//checks for word containing @ or nums and returns word as is
+                        {
+                            Console.WriteLine(Word);
+                        }
+                        else
+                        {
+                            string NewWord = CheckForVowels(Word);
+                            Console.Write(NewWord + " ");
+                        }
+                    }
+                    repeat = RepeatProgram();
                 }
-                else
-                {
-                    Console.Clear();
-                }
-
-                
             }
-            
+            catch (Exception e)
+            {
+
+                Console.WriteLine("Whoops! Something went wrong! Please try again later!");
+            }
+
         }
+        public static bool RepeatProgram()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Would you like to try again? (y/n)");
+            string Answer = Console.ReadLine().ToLower();
+            if (Answer != "y")
+            {
+                bool repeat = false;
+                Console.WriteLine("Goodbye!");
+                return repeat;
+            }
+            else
+            {
+                bool repeat = true;
+                Console.Clear();
+                return repeat;
+
+            }
+        }
+        public static string[] InputTextToArray(string InputText)
+        {
+            return InputText.Split(' ');
+        }
+
+        public static bool CheckForNums(string Word)
+        {
+            Regex Conditions = new Regex((@"@|\d"));
+
+            if (Conditions.IsMatch(Word))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static string CheckForVowels(string Word)
+        {
+            char[] Vowels = { 'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u' };
+            int VowelIndex = Word.IndexOfAny(Vowels);
+
+            if (VowelIndex > 0 || VowelIndex < 0)//if word does not start with a vowel or not contain a vowel
+            {
+                Word = DoesNotStartWithVowels(Word, VowelIndex);
+                return Word;
+            }
+            else
+            {
+                Word = DoesStartWithVowels(Word);
+                return Word;
+            }
+        }
+        public static string DoesNotStartWithVowels(string Word, int VowelIndex)
+        {
+            Word = Word.Substring(VowelIndex, Word.Length - VowelIndex) + Word.Substring(0, VowelIndex) + "ay";
+            return Word;
+
+        }
+        public static string DoesStartWithVowels(string Word)
+        {
+            return Word += "way";
+        }
+        //***Tried to find a method to move punctuation to the end but didn't get finished
+        //public static string MovePunctuation(string Word)
+        //{
+        //    //char[] Punctuation = { '!', ',', '?', '.',':',';'};
+        //    //int LastChar= Word.LastIndexOfAny(Punctuation);
+        //    if (Word.EndsWith(@"?|!"))
+        //    {
+        //        //Punct = NewWord.Substring(NewWord.Length,NewWord.Length);
+        //        return Word.Substring(0,Word.Length-1);
+        //    }
+        //    else
+        //    {
+        //        //Punct = null;
+        //        return Word + "not working!";
+
     }
 }
